@@ -3,7 +3,7 @@ import streamlit as st
 st.set_page_config(page_title="👗 이모지 옷 입히기 게임", layout="centered")
 
 st.title("👗 이모지 옷 입히기 게임")
-st.markdown("사람 이모지에 다양한 옷을 입혀보세요! 👚👖👒")
+st.markdown("사람 이모지 위에 옷을 겹쳐서 입혀보세요! 👚👖👒")
 
 # 세션 상태 초기화
 if "gender" not in st.session_state:
@@ -15,10 +15,9 @@ if "top" not in st.session_state:
 if "bottom" not in st.session_state:
     st.session_state.bottom = ""
 
-# ✅ 성별 선택
+# 성별 선택
 st.subheader("🚻 성별 선택")
 gender_choice = st.radio("성별을 선택하세요", ["남성", "여성"], horizontal=True)
-
 if gender_choice == "남성":
     st.session_state.gender = "🧍‍♂️"
 else:
@@ -52,29 +51,31 @@ bottom_options = {
     "🩱 수영복": "🩱"
 }
 
-# 옷 선택 UI
+# 선택 UI
 st.subheader("🧢 모자 선택")
 selected_hat = st.radio("모자를 선택하세요", list(hat_options.keys()), horizontal=True)
 st.session_state.hat = hat_options[selected_hat]
 
 st.subheader("👕 상의 선택")
-selected_top = st.radio("상의 이모지를 선택하세요", list(top_options.keys()), horizontal=True)
+selected_top = st.radio("상의를 선택하세요", list(top_options.keys()), horizontal=True)
 st.session_state.top = top_options[selected_top]
 
 st.subheader("👖 하의 선택")
-selected_bottom = st.radio("하의 이모지를 선택하세요", list(bottom_options.keys()), horizontal=True)
+selected_bottom = st.radio("하의를 선택하세요", list(bottom_options.keys()), horizontal=True)
 st.session_state.bottom = bottom_options[selected_bottom]
 
 # 캐릭터 출력
 st.markdown("---")
 st.subheader("✨ 당신이 꾸민 캐릭터!")
 
-character_display = f"""
-<div style='font-size: 80px; text-align: center; line-height: 1.2'>
-    {st.session_state.hat}<br>
-    {st.session_state.top}<br>
-    {st.session_state.gender}<br>
-    {st.session_state.bottom}
+# CSS를 활용한 이모지 겹치기
+character_html = f"""
+<div style="display: flex; justify-content: center; align-items: center; position: relative; height: 250px;">
+    <div style="font-size: 120px; position: absolute;">{st.session_state.gender}</div>
+    <div style="font-size: 120px; position: absolute;">{st.session_state.bottom}</div>
+    <div style="font-size: 120px; position: absolute;">{st.session_state.top}</div>
+    <div style="font-size: 120px; position: absolute;">{st.session_state.hat}</div>
 </div>
 """
-st.markdown(character_display, unsafe_allow_html=True)
+
+st.markdown(character_html, unsafe_allow_html=True)
