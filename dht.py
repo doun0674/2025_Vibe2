@@ -3,7 +3,7 @@ import streamlit as st
 st.set_page_config(page_title="👗 이모지 옷 입히기 게임", layout="centered")
 
 st.title("👗 이모지 옷 입히기 게임")
-st.markdown("사람 이모지 위에 옷을 겹쳐서 입혀보세요! 👚👖👒")
+st.markdown("사람 이모지를 더 크게 확대해서 옷을 입혀보세요! 👚👖👒")
 
 # 세션 상태 초기화
 if "gender" not in st.session_state:
@@ -18,10 +18,7 @@ if "bottom" not in st.session_state:
 # 성별 선택
 st.subheader("🚻 성별 선택")
 gender_choice = st.radio("성별을 선택하세요", ["남성", "여성"], horizontal=True)
-if gender_choice == "남성":
-    st.session_state.gender = "🧍‍♂️"
-else:
-    st.session_state.gender = "🧍‍♀️"
+st.session_state.gender = "🧍‍♂️" if gender_choice == "남성" else "🧍‍♀️"
 
 # 이모지 옵션
 hat_options = {
@@ -68,13 +65,20 @@ st.session_state.bottom = bottom_options[selected_bottom]
 st.markdown("---")
 st.subheader("✨ 당신이 꾸민 캐릭터!")
 
-# CSS를 활용한 이모지 겹치기
+# 겹치게 보이도록 크기와 위치 조정
 character_html = f"""
-<div style="display: flex; justify-content: center; align-items: center; position: relative; height: 250px;">
-    <div style="font-size: 120px; position: absolute;">{st.session_state.gender}</div>
-    <div style="font-size: 120px; position: absolute;">{st.session_state.bottom}</div>
-    <div style="font-size: 120px; position: absolute;">{st.session_state.top}</div>
-    <div style="font-size: 120px; position: absolute;">{st.session_state.hat}</div>
+<div style="position: relative; height: 420px; width: 250px; margin: 0 auto;">
+    <!-- 사람 이모지 (가장 아래, 중심 확대됨) -->
+    <div style="font-size: 200px; position: absolute; top: 100px; left: 0px; z-index: 1;">{st.session_state.gender}</div>
+
+    <!-- 하의 (다리 쪽에 겹치기) -->
+    <div style="font-size: 200px; position: absolute; top: 170px; left: 0px; z-index: 2;">{st.session_state.bottom}</div>
+
+    <!-- 상의 (몸통에 겹치기) -->
+    <div style="font-size: 200px; position: absolute; top: 90px; left: 0px; z-index: 3;">{st.session_state.top}</div>
+
+    <!-- 모자 (머리 위에 겹치기) -->
+    <div style="font-size: 200px; position: absolute; top: 10px; left: 0px; z-index: 4;">{st.session_state.hat}</div>
 </div>
 """
 
