@@ -24,35 +24,18 @@ def get_winner(player, computer):
 # 세션 상태 초기화
 if "played" not in st.session_state:
     st.session_state.played = False
-if "player_score" not in st.session_state:
-    st.session_state.player_score = 0
-if "computer_score" not in st.session_state:
-    st.session_state.computer_score = 0
 
 # 앱 제목
 st.markdown("<h1 style='text-align:center;'>🧸 가위바위보 게임</h1>", unsafe_allow_html=True)
-
-# 점수판
-st.markdown("### 🧾 현재 점수")
-col1, col2 = st.columns(2)
-col1.metric("당신 점수", st.session_state.player_score)
-col2.metric("컴퓨터 점수", st.session_state.computer_score)
-
 st.markdown("#### 컴퓨터와 귀엽게 한 판 해볼까요?")
 
-# 게임 플레이
+# 게임 진행
 if not st.session_state.played:
     player_choice = st.radio("👇 아래에서 선택하세요!", ["가위", "바위", "보"], horizontal=True)
     
     if st.button("🎮 가위바위보!"):
         computer_choice = random.choice(["가위", "바위", "보"])
         result = get_winner(player_choice, computer_choice)
-        
-        # 점수 반영
-        if "이겼어요" in result:
-            st.session_state.player_score += 1
-        elif "컴퓨터가 이겼어요" in result:
-            st.session_state.computer_score += 1
         
         # 결과 출력
         st.markdown("---")
